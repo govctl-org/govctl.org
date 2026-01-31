@@ -1,0 +1,591 @@
+---
+/**
+ * HeroComparison - A unified comparison slider component
+ * Both layers show the same layout, just styled differently
+ * The slider reveals one layer over the other
+ */
+import { Icon } from 'astro-icon/components';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const phases = ['SPEC', 'IMPL', 'TEST', 'STABLE'];
+
+// Chaotic code snippets (messy, undisciplined)
+const chaosSnippets = [
+  { text: 'if (random() > 0.5) { useRedis() }', top: '18%', left: '8%', rotate: '-3deg' },
+  { text: '// TODO: fix later maybe', top: '32%', left: '58%', rotate: '2deg' },
+  { text: 'cache = memcached || redis || null', top: '48%', left: '12%', rotate: '-1deg' },
+  { text: '/* HACK: dont touch this */', top: '65%', left: '52%', rotate: '3deg' },
+  { text: 'feature.works = Math.random() > 0.3', top: '78%', left: '22%', rotate: '-2deg' },
+];
+
+// Ordered code snippets (clean, deterministic)
+const orderSnippets = [
+  { text: 'const cache = new RedisCache(config)', top: '18%', left: '8%', rotate: '0deg' },
+  { text: '// RFC-0042: Cache layer spec', top: '32%', left: '58%', rotate: '0deg' },
+  { text: 'await validatePhase("impl")', top: '48%', left: '12%', rotate: '0deg' },
+  { text: '/* Tested: 100% coverage */', top: '65%', left: '52%', rotate: '0deg' },
+  { text: 'feature.enabled = config.get("feature")', top: '78%', left: '22%', rotate: '0deg' },
+];
+---
+
+<div class="hero-comparison relative min-h-[100svh] lg:min-h-screen overflow-hidden" id="hero-comparison">
+  <!-- ========== CHAOS LAYER (Background) ========== -->
+  <div class="comparison-layer chaos-layer absolute inset-0">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#1a0a0a] via-[var(--color-bg)] to-[#0a0a1a]"></div>
+    <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[var(--color-chaos)]/15 rounded-full blur-[150px]"></div>
+    <div class="absolute bottom-1/4 right-1/3 w-[400px] h-[400px] bg-[var(--color-chaos)]/10 rounded-full blur-[120px]"></div>
+
+    <!-- Floating particles (chaotic movement) -->
+    <div class="chaos-particles" aria-hidden="true">
+      <div class="chaos-particle"></div>
+      <div class="chaos-particle"></div>
+      <div class="chaos-particle"></div>
+      <div class="chaos-particle"></div>
+      <div class="chaos-particle"></div>
+      <div class="chaos-particle"></div>
+    </div>
+
+    <!-- Header (chaos version - corrupted/glitchy) -->
+    <div class="absolute top-0 left-0 right-0 pt-20 lg:pt-24 text-center pointer-events-none">
+      <div class="inline-flex items-center gap-2.5 px-4 py-2 mb-4 rounded-full border border-[var(--color-chaos)]/30 bg-[var(--color-bg)]/80 backdrop-blur-sm">
+        <span class="relative w-2 h-2 rounded-full bg-[var(--color-chaos)] animate-pulse"></span>
+        <span class="text-sm font-medium text-[var(--color-chaos)]">{t('home.chaos.badge')}</span>
+      </div>
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 leading-[1.1] px-4 chaos-title">
+        <span class="text-[var(--color-text-muted)] chaos-glitch" data-text={t('home.title')}>{t('home.title')}</span>
+        <span class="text-[var(--color-chaos)] chaos-glitch-highlight" data-text={t('home.titleHighlight')}>
+          <span class="chaos-strike">{t('home.titleHighlight')}</span>
+          <span class="chaos-question">?</span>
+        </span>
+      </h1>
+      <p class="text-base md:text-xl font-mono text-[var(--color-chaos)]/70">
+        {t('home.chaos.tagline')}
+      </p>
+    </div>
+
+    <!-- Floating chaotic code snippets (hidden on small screens) -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none hidden md:block" aria-hidden="true">
+      {chaosSnippets.map((s, i) => (
+        <span
+          class="chaos-snippet absolute font-mono text-xs text-[var(--color-chaos)]/60 whitespace-nowrap"
+          style={`top: ${s.top}; left: ${s.left}; transform: rotate(${s.rotate}); animation-delay: ${i * 0.5}s;`}
+        >
+          {s.text}
+        </span>
+      ))}
+    </div>
+
+    <!-- Content container -->
+    <div class="relative h-full flex flex-col lg:flex-row">
+      <!-- Left side: Chaos info card -->
+      <div class="w-full lg:w-1/2 flex items-center justify-center p-3 md:p-4 lg:p-8 pt-32 md:pt-36 lg:pt-8">
+        <div class="max-w-md p-4 md:p-6 lg:p-8 rounded-2xl bg-[var(--color-chaos)]/5 border border-[var(--color-chaos)]/30 backdrop-blur-sm">
+          <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+            <div class="w-10 h-10 md:w-12 lg:w-14 md:h-12 lg:h-14 rounded-xl bg-[var(--color-chaos)]/20 flex items-center justify-center">
+              <Icon name="heroicons:exclamation-triangle" class="w-5 h-5 md:w-6 lg:w-7 md:h-6 lg:h-7 text-[var(--color-chaos)]" aria-hidden="true" />
+            </div>
+            <div>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-[var(--color-chaos)]">{t('home.chaos.title')}</h3>
+              <p class="text-sm md:text-base text-[var(--color-text-muted)]">{t('home.chaos.subtitle')}</p>
+            </div>
+          </div>
+          <ul class="space-y-2 md:space-y-3 lg:space-y-4">
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:x-mark" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-chaos)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text-muted)] font-mono">{t('home.chaos.line1')}</span>
+            </li>
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:x-mark" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-chaos)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text-muted)] font-mono">{t('home.chaos.line2')}</span>
+            </li>
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:x-mark" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-chaos)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text-muted)] font-mono">{t('home.chaos.line3')}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right side: Phase flow (chaos version - broken/scattered) -->
+      <div class="w-full lg:w-1/2 flex items-center justify-center p-3 md:p-4 lg:p-8 pb-20 md:pb-24 lg:pb-8">
+        <div class="flex flex-col items-center gap-4 md:gap-6">
+          <!-- Scattered phases (no clear order) -->
+          <div class="relative w-48 h-32 md:w-64 md:h-44 lg:w-80 lg:h-52">
+            <div class="absolute top-0 left-0 px-2 md:px-4 py-1 md:py-2 rounded-lg border-2 border-[var(--color-text-muted)]/30 text-[var(--color-text-muted)] font-mono text-xs md:text-base font-bold opacity-50 rotate-[-5deg]">SPEC?</div>
+            <div class="absolute top-6 md:top-10 right-0 px-2 md:px-4 py-1 md:py-2 rounded-lg border-2 border-[var(--color-text-muted)]/30 text-[var(--color-text-muted)] font-mono text-xs md:text-base font-bold opacity-50 rotate-[3deg]">IMPL?</div>
+            <div class="absolute bottom-6 md:bottom-10 left-4 px-2 md:px-4 py-1 md:py-2 rounded-lg border-2 border-[var(--color-text-muted)]/30 text-[var(--color-text-muted)] font-mono text-xs md:text-base font-bold opacity-50 rotate-[2deg]">TEST?</div>
+            <div class="absolute bottom-0 right-4 md:right-8 px-2 md:px-4 py-1 md:py-2 rounded-lg border-2 border-[var(--color-text-muted)]/30 text-[var(--color-text-muted)] font-mono text-xs md:text-base font-bold opacity-50 rotate-[-3deg]">???</div>
+          </div>
+          <p class="text-sm md:text-base text-[var(--color-chaos)] font-mono">{t('home.chaos.noPath')}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ORDER LAYER (Foreground, clipped) ========== -->
+  <div class="comparison-layer order-layer absolute inset-0" id="order-layer" style="clip-path: inset(0 0 0 95%);">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a1a0a] via-[var(--color-bg)] to-[#0a0a1a]"></div>
+    <div class="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-[var(--color-order)]/12 rounded-full blur-[150px]"></div>
+    <div class="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] bg-[var(--color-order)]/8 rounded-full blur-[120px]"></div>
+
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 order-grid opacity-40"></div>
+
+    <!-- Header (order version) -->
+    <div class="absolute top-0 left-0 right-0 pt-20 lg:pt-24 text-center pointer-events-none">
+      <div class="inline-flex items-center gap-2.5 px-4 py-2 mb-4 rounded-full border border-[var(--color-stable)]/30 bg-[var(--color-bg)]/80 backdrop-blur-sm">
+        <span class="relative w-2 h-2 rounded-full bg-[var(--color-stable)] badge-pulse"></span>
+        <span class="text-sm font-medium text-[var(--color-stable)]">{t('home.order.badge')}</span>
+      </div>
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 leading-[1.1] px-4">
+        <span class="text-[var(--color-text)]">{t('home.title')}</span>
+        <span class="text-gradient text-glow">{t('home.titleHighlight')}</span>
+      </h1>
+      <p class="text-base md:text-xl font-mono text-[var(--color-primary)]">
+        {t('home.tagline')}
+      </p>
+    </div>
+
+    <!-- Floating ordered code snippets (hidden on small screens) -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none hidden md:block" aria-hidden="true">
+      {orderSnippets.map((s) => (
+        <span
+          class="order-snippet absolute font-mono text-xs text-[var(--color-order)]/50 whitespace-nowrap"
+          style={`top: ${s.top}; left: ${s.left}; transform: rotate(${s.rotate});`}
+        >
+          {s.text}
+        </span>
+      ))}
+    </div>
+
+    <!-- Content container -->
+    <div class="relative h-full flex flex-col lg:flex-row">
+      <!-- Left side: Order info card (same position as chaos card) -->
+      <div class="w-full lg:w-1/2 flex items-center justify-center p-3 md:p-4 lg:p-8 pt-32 md:pt-36 lg:pt-8">
+        <div class="max-w-md p-4 md:p-6 lg:p-8 rounded-2xl bg-[var(--color-order)]/5 border border-[var(--color-order)]/30 shadow-[0_0_40px_var(--glow-order)] backdrop-blur-sm">
+          <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+            <div class="w-10 h-10 md:w-12 lg:w-14 md:h-12 lg:h-14 rounded-xl bg-[var(--color-order)]/20 flex items-center justify-center">
+              <Icon name="heroicons:shield-check" class="w-5 h-5 md:w-6 lg:w-7 md:h-6 lg:h-7 text-[var(--color-order)]" aria-hidden="true" />
+            </div>
+            <div>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-[var(--color-order)]">{t('home.order.title')}</h3>
+              <p class="text-sm md:text-base text-[var(--color-text-muted)]">{t('home.order.subtitle')}</p>
+            </div>
+          </div>
+          <ul class="space-y-2 md:space-y-3 lg:space-y-4">
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:check" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-order)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text)] font-mono">{t('home.order.line1')}</span>
+            </li>
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:check" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-order)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text)] font-mono">{t('home.order.line2')}</span>
+            </li>
+            <li class="flex items-center gap-2 md:gap-3 lg:gap-4">
+              <Icon name="heroicons:check" class="w-5 h-5 md:w-6 md:h-6 text-[var(--color-order)] flex-shrink-0" aria-hidden="true" />
+              <span class="text-sm md:text-base text-[var(--color-text)] font-mono">{t('home.order.line3')}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right side: Phase flow (order version - clean flow) -->
+      <div class="w-full lg:w-1/2 flex items-center justify-center p-3 md:p-4 lg:p-8 pb-20 md:pb-24 lg:pb-8">
+        <div class="flex flex-col items-center gap-4 md:gap-6">
+          <!-- Clean phase flow -->
+          <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 lg:gap-3">
+            {phases.map((phase, i) => (
+              <>
+                <div class={`px-2 md:px-3 lg:px-4 py-1 md:py-1.5 lg:py-2 rounded-lg border-2 font-mono text-xs md:text-sm lg:text-base font-bold ${
+                  phase === 'SPEC' ? 'border-[var(--color-spec)] text-[var(--color-spec)]' :
+                  phase === 'IMPL' ? 'border-[var(--color-impl)] text-[var(--color-impl)]' :
+                  phase === 'TEST' ? 'border-[var(--color-test)] text-[var(--color-test)]' :
+                  'border-[var(--color-stable)] text-[var(--color-stable)]'
+                }`}>
+                  {phase}
+                </div>
+                {i < phases.length - 1 && (
+                  <Icon name="heroicons:chevron-right" class="w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 text-[var(--color-text-muted)]" aria-hidden="true" />
+                )}
+              </>
+            ))}
+          </div>
+          <p class="text-sm md:text-base text-[var(--color-order)] font-mono">{t('phase.noShortcuts')}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DRAGGABLE SLIDER ========== -->
+  <div class="slider-handle" id="comparison-handle" style="left: 95%; --chaos-blend: 1; --order-blend: 0;">
+    <!-- Adaptive blend zone - color intensity based on position -->
+    <div class="blend-zone" id="blend-zone"></div>
+  </div>
+
+  <!-- ========== FLOATING FOOTER (always visible) ========== -->
+  <div class="absolute bottom-4 md:bottom-8 left-0 right-0 z-40 text-center px-4">
+    <p class="text-xs text-[var(--color-text-muted)] mb-3 md:mb-4 items-center justify-center gap-2 slider-hint hidden md:flex">
+      <Icon name="heroicons:bars-3" class="w-4 h-4 animate-pulse" aria-hidden="true" />
+      {t('home.slider.hint')}
+    </p>
+    <div class="flex flex-wrap justify-center gap-2 md:gap-4 pointer-events-auto">
+      <a href="#phase" class="btn-primary inline-flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-3 text-white font-medium rounded-xl text-xs md:text-sm">
+        {t('home.cta.exploreProducts')}
+        <Icon name="heroicons:chevron-down" class="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" />
+      </a>
+      <a href="https://github.com/govctl-org" target="_blank" rel="noopener noreferrer" class="btn-secondary inline-flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-3 text-[var(--color-text)] font-medium rounded-xl text-xs md:text-sm">
+        <Icon name="mdi:github" class="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
+        <span class="hidden sm:inline">{t('home.cta.viewOnGithub')}</span>
+        <span class="sm:hidden">GitHub</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .comparison-layer {
+    min-height: 100vh;
+  }
+
+  .order-layer {
+    will-change: clip-path;
+  }
+
+  /* Ensure content is vertically centered accounting for header/footer */
+  .comparison-layer > .relative {
+    min-height: 100vh;
+    padding-top: 180px;
+    padding-bottom: 140px;
+  }
+
+  /* Floating code snippets - chaos (drifting animation) */
+  .chaos-snippet {
+    animation: drift-chaos 12s ease-in-out infinite;
+  }
+  .chaos-snippet:nth-child(2) { animation-duration: 15s; animation-direction: reverse; }
+  .chaos-snippet:nth-child(3) { animation-duration: 10s; }
+  .chaos-snippet:nth-child(4) { animation-duration: 14s; animation-direction: reverse; }
+  .chaos-snippet:nth-child(5) { animation-duration: 11s; }
+
+  @keyframes drift-chaos {
+    0%, 100% { transform: translate(0, 0) rotate(var(--rotate, -3deg)); opacity: 0.4; }
+    25% { transform: translate(15px, -12px) rotate(calc(var(--rotate, -3deg) + 2deg)); opacity: 0.6; }
+    50% { transform: translate(-8px, 18px) rotate(calc(var(--rotate, -3deg) - 1deg)); opacity: 0.3; }
+    75% { transform: translate(20px, 8px) rotate(calc(var(--rotate, -3deg) + 3deg)); opacity: 0.5; }
+  }
+
+  /* Floating code snippets - order (stable, subtle pulse) */
+  .order-snippet {
+    animation: pulse-order 4s ease-in-out infinite;
+  }
+  .order-snippet:nth-child(2) { animation-delay: 0.5s; }
+  .order-snippet:nth-child(3) { animation-delay: 1s; }
+  .order-snippet:nth-child(4) { animation-delay: 1.5s; }
+  .order-snippet:nth-child(5) { animation-delay: 2s; }
+
+  @keyframes pulse-order {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.55; }
+  }
+
+  /* ========== SLIDER STYLES ========== */
+  .slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Custom cursor for the draggable area */
+  .hero-comparison {
+    /* Glowing chaos/order split cursor with energy effect */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='chaos' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23ef4444'/%3E%3Cstop offset='100%25' stop-color='%23f87171'/%3E%3C/linearGradient%3E%3ClinearGradient id='order' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='100%25' stop-color='%234ade80'/%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='1.5' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23glow)'%3E%3Cpath d='M4 20l8-7v4h5v6h-5v4z' fill='url(%23chaos)'/%3E%3Cpath d='M36 20l-8-7v4h-5v6h5v4z' fill='url(%23order)'/%3E%3Crect x='18' y='15' width='4' height='10' rx='2' fill='%23fff'/%3E%3Ccircle cx='20' cy='20' r='2' fill='%23a855f7'/%3E%3C/g%3E%3C/svg%3E") 20 20, ew-resize;
+  }
+
+  .hero-comparison:active {
+    /* Intense energy burst cursor when dragging */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CradialGradient id='burst' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='30%25' stop-color='%23a855f7'/%3E%3Cstop offset='60%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3Cfilter id='glow2' x='-100%25' y='-100%25' width='300%25' height='300%25'%3E%3CfeGaussianBlur stdDeviation='2' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23glow2)'%3E%3Ccircle cx='20' cy='20' r='10' fill='url(%23burst)'/%3E%3Cpath d='M8 20h6M26 20h6' stroke='%23ef4444' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M8 20h6M26 20h6' stroke='%2322c55e' stroke-width='2' stroke-linecap='round' stroke-dasharray='2 4'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E") 20 20, grabbing;
+  }
+
+  /* Restore normal cursor for interactive elements */
+  .hero-comparison a,
+  .hero-comparison button {
+    cursor: pointer;
+  }
+
+  /* Adaptive blend zone - transitions from red to green based on position */
+  .blend-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    pointer-events: none;
+    /* Dynamic color mix based on CSS variables set by JS */
+    background: color-mix(
+      in srgb,
+      var(--color-chaos) calc(var(--chaos-blend, 1) * 100%),
+      var(--color-order) calc(var(--order-blend, 0) * 100%)
+    );
+    opacity: 0.3;
+    filter: blur(60px);
+  }
+
+  /* Hint animation */
+  .slider-hint {
+    animation: hint-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hint-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== CHAOS TITLE EFFECTS ========== */
+  .chaos-title {
+    animation: chaos-shake 0.1s infinite;
+  }
+
+  @keyframes chaos-shake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(1px, -1px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(1px, 0); }
+  }
+
+  .chaos-glitch {
+    position: relative;
+    display: inline-block;
+  }
+
+  .chaos-glitch::before,
+  .chaos-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+
+  .chaos-glitch::before {
+    color: var(--color-chaos);
+    animation: glitch-offset 3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+
+  .chaos-glitch::after {
+    color: var(--color-text-muted);
+    animation: glitch-offset 3s infinite reverse;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitch-offset {
+    0%, 90%, 100% { transform: translate(0, 0); }
+    92% { transform: translate(-2px, 1px); }
+    94% { transform: translate(2px, -1px); }
+    96% { transform: translate(-1px, 2px); }
+    98% { transform: translate(1px, -2px); }
+  }
+
+  .chaos-glitch-highlight {
+    position: relative;
+  }
+
+  .chaos-strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--color-chaos);
+    text-decoration-thickness: 3px;
+    opacity: 0.5;
+  }
+
+  .chaos-question {
+    position: absolute;
+    right: -0.5em;
+    top: 0;
+    color: var(--color-chaos);
+    animation: question-blink 1s infinite;
+  }
+
+  @keyframes question-blink {
+    0%, 40%, 100% { opacity: 1; }
+    50%, 90% { opacity: 0; }
+  }
+</style>
+
+<script>
+  function initHeroComparison() {
+    const container = document.getElementById('hero-comparison');
+    const handle = document.getElementById('comparison-handle');
+    const orderLayer = document.getElementById('order-layer');
+
+    if (!container || !handle || !orderLayer) return;
+
+    let isDragging = false;
+    let isAnimating = false;
+    let animationCancelled = false;
+    let containerRect: DOMRect;
+
+    function setPosition(percentage: number) {
+      const clamped = Math.max(5, Math.min(95, percentage));
+      handle.style.left = `${clamped}%`;
+      orderLayer.style.clipPath = `inset(0 0 0 ${clamped}%)`;
+
+      // Update blend colors based on position
+      // At 95% (far right/chaos), chaos-blend=1, order-blend=0
+      // At 5% (far left/order), chaos-blend=0, order-blend=1
+      const normalizedPos = (clamped - 5) / 90; // 0 to 1
+      const chaosBlend = normalizedPos; // More chaos color when slider is right
+      const orderBlend = 1 - normalizedPos; // More order color when slider is left
+      handle.style.setProperty('--chaos-blend', chaosBlend.toString());
+      handle.style.setProperty('--order-blend', orderBlend.toString());
+
+      // Update ARIA for accessibility
+      handle.setAttribute('aria-valuenow', clamped.toString());
+      const chaosPercent = Math.round(normalizedPos * 100);
+      const orderPercent = 100 - chaosPercent;
+      handle.setAttribute('aria-valuetext', `${chaosPercent}% chaos, ${orderPercent}% order`);
+    }
+
+    function updatePosition(clientX: number) {
+      containerRect = container.getBoundingClientRect();
+      const x = clientX - containerRect.left;
+      const percentage = (x / containerRect.width) * 100;
+      setPosition(percentage);
+    }
+
+    function onStart(clientX: number) {
+      // Cancel auto-animation if user interacts
+      animationCancelled = true;
+      isDragging = true;
+      containerRect = container.getBoundingClientRect();
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
+      updatePosition(clientX);
+    }
+
+    function onMove(clientX: number) {
+      if (!isDragging) return;
+      updatePosition(clientX);
+    }
+
+    function onEnd() {
+      isDragging = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+
+    // Auto-animation: slide from 95% to 5% after delay
+    function autoAnimate() {
+      if (animationCancelled || isAnimating) return;
+      isAnimating = true;
+
+      const startPos = 95;
+      const endPos = 5;
+      const duration = 4000; // 2 seconds
+      const startTime = performance.now();
+
+      function animate(currentTime: number) {
+        if (animationCancelled) {
+          isAnimating = false;
+          return;
+        }
+
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const currentPos = startPos + (endPos - startPos) * eased;
+
+        setPosition(currentPos);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          isAnimating = false;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Start auto-animation after 1 second delay
+    setTimeout(() => {
+      if (!animationCancelled) {
+        autoAnimate();
+      }
+    }, 1000);
+
+    // Mouse events
+    handle.addEventListener('mousedown', (e) => onStart(e.clientX));
+    container.addEventListener('mousedown', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('a') && !target.closest('button')) {
+        onStart(e.clientX);
+      }
+    });
+    document.addEventListener('mousemove', (e) => onMove(e.clientX));
+    document.addEventListener('mouseup', onEnd);
+
+    // Touch events
+    handle.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) onStart(e.touches[0].clientX);
+    }, { passive: true });
+    container.addEventListener('touchstart', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('a') && !target.closest('button') && e.touches.length > 0) {
+        onStart(e.touches[0].clientX);
+      }
+    }, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length > 0) {
+        e.preventDefault();
+        onMove(e.touches[0].clientX);
+      }
+    }, { passive: false });
+    document.addEventListener('touchend', onEnd);
+
+    // Keyboard accessibility
+    handle.setAttribute('tabindex', '0');
+    handle.setAttribute('role', 'slider');
+    handle.setAttribute('aria-label', 'Comparison slider: drag to reveal order from chaos');
+    handle.setAttribute('aria-valuemin', '5');
+    handle.setAttribute('aria-valuemax', '95');
+    handle.setAttribute('aria-valuenow', '95');
+    handle.setAttribute('aria-valuetext', 'Showing chaos');
+    handle.addEventListener('keydown', (e: KeyboardEvent) => {
+      animationCancelled = true; // Cancel animation on keyboard use
+      const currentLeft = parseFloat(handle.style.left) || 95;
+      let newPos = currentLeft;
+      if (e.key === 'ArrowLeft') newPos = Math.max(5, currentLeft - 5);
+      else if (e.key === 'ArrowRight') newPos = Math.min(95, currentLeft + 5);
+      else return;
+      e.preventDefault();
+      setPosition(newPos);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroComparison);
+  } else {
+    initHeroComparison();
+  }
+</script>

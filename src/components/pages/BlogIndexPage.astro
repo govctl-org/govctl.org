@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BlogCard from '../BlogCard.astro';
+import TagBadge from '../TagBadge.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const langPrefix = lang === 'en' ? '' : `/${lang}`;
+
+// Get all non-draft blog posts for this locale, sorted by date
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Filter by locale (slug starts with 'en/' or 'zh/')
+const posts = allPosts
+  .filter((post) => post.slug.startsWith(`${lang}/`))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Extract all unique tags
+const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+
+// Helper to get display slug (without locale prefix)
+const getDisplaySlug = (slug: string) => slug.replace(`${lang}/`, '');
+---
+
+<Base title={`${t('blog.title')} | govctl`} description={t('blog.subtitle')} lang={lang}>
+  <!-- Hero Section -->
+  <section class="hero-gradient grid-pattern relative pt-32 pb-20">
+    <div class="particles" aria-hidden="true">
+      <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+      <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+      <div class="particle" style="left: 70%; animation-delay: 8s;"></div>
+      <div class="particle" style="left: 90%; animation-delay: 12s;"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <!-- Badge -->
+      <div class="flex justify-center mb-8">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-surface)]/80 border border-[var(--color-border)] backdrop-blur-sm">
+          <Icon name="heroicons:newspaper" class="w-4 h-4 text-[var(--color-primary)]" aria-hidden="true" />
+          <span class="text-sm font-medium text-[var(--color-text-secondary)]">{t('nav.blog')}</span>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6">
+        <span class="text-gradient text-glow">{t('blog.title')}</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-[var(--color-text-muted)] text-center max-w-2xl mx-auto mb-12 leading-relaxed">
+        {t('blog.subtitle')}
+      </p>
+
+      <!-- Tag filters -->
+      {allTags.length > 0 && (
+        <div class="flex flex-wrap justify-center gap-2">
+          {allTags.map((tag) => (
+            <TagBadge tag={tag} size="md" />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Posts Grid -->
+  <section class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      {posts.length === 0 ? (
+        <div class="text-center py-20">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center">
+            <Icon name="heroicons:newspaper" class="w-8 h-8 text-[var(--color-text-muted)]" aria-hidden="true" />
+          </div>
+          <h2 class="text-xl font-semibold text-[var(--color-text)] mb-2">{t('blog.noPosts')}</h2>
+          <p class="text-[var(--color-text-muted)]">{t('blog.checkBack')}</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              slug={getDisplaySlug(post.slug)}
+              lang={lang}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>

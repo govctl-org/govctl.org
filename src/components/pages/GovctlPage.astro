@@ -1,0 +1,291 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Terminal from '../Terminal.astro';
+import PhaseFlow from '../PhaseFlow.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const features = [
+  {
+    title: t('govctl.feature.rfc'),
+    description: t('govctl.feature.rfc.desc'),
+    icon: 'heroicons:document-text',
+  },
+  {
+    title: t('govctl.feature.adr'),
+    description: t('govctl.feature.adr.desc'),
+    icon: 'heroicons:building-library',
+  },
+  {
+    title: t('govctl.feature.work'),
+    description: t('govctl.feature.work.desc'),
+    icon: 'heroicons:clipboard-document-check',
+  },
+  {
+    title: t('govctl.feature.gates'),
+    description: t('govctl.feature.gates.desc'),
+    icon: 'heroicons:shield-check',
+  },
+  {
+    title: t('govctl.feature.validation'),
+    description: t('govctl.feature.validation.desc'),
+    icon: 'heroicons:magnifying-glass',
+  },
+  {
+    title: t('govctl.feature.ai'),
+    description: t('govctl.feature.ai.desc'),
+    icon: 'heroicons:computer-desktop',
+  },
+];
+
+const goodFit = [
+  t('govctl.fit.good.1'),
+  t('govctl.fit.good.2'),
+  t('govctl.fit.good.3'),
+  t('govctl.fit.good.4'),
+];
+
+const notFor = [
+  t('govctl.fit.bad.1'),
+  t('govctl.fit.bad.2'),
+];
+---
+
+<Base title="govctl" description={`${t('govctl.hero.desc')} ${t('govctl.hero.descMuted')}`} lang={lang}>
+  <!-- Hero -->
+  <section class="hero-gradient noise-overlay relative py-24 md:py-32 overflow-hidden">
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 grid-pattern opacity-30"></div>
+
+    <!-- Gradient orbs -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--color-primary)]/15 rounded-full blur-[100px] -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-[var(--color-stable)]/10 rounded-full blur-[80px] translate-y-1/2"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left: Content -->
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-stable)]/10 text-[var(--color-stable)] border border-[var(--color-stable)]/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-stable)] animate-pulse"></span>
+              {t('status.live')}
+            </span>
+            <span class="text-sm text-[var(--color-text-muted)] font-mono">v0.3.0</span>
+          </div>
+
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 font-mono">
+            <span class="text-gradient">govctl</span>
+          </h1>
+
+          <p class="text-xl text-[var(--color-text-secondary)] max-w-lg mb-10 leading-relaxed">
+            {t('govctl.hero.desc')}
+            <span class="text-[var(--color-text-muted)]">{t('govctl.hero.descMuted')}</span>
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="https://govctl-org.github.io/govctl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 text-white font-medium rounded-xl"
+            >
+              {t('common.documentation')}
+              <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4" aria-hidden="true" />
+            </a>
+            <a
+              href="https://github.com/govctl-org/govctl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-secondary inline-flex items-center gap-2 px-6 py-3.5 text-[var(--color-text)] font-medium rounded-xl"
+            >
+              <Icon name="mdi:github" class="w-5 h-5" aria-hidden="true" />
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Install Terminal -->
+        <div class="w-full">
+          <Terminal
+            title="Install"
+            lines={[
+              { prompt: true, text: 'cargo install govctl' },
+              { text: '', dim: true },
+              { prompt: true, text: '# Or with TUI dashboard' },
+              { prompt: true, text: 'cargo install govctl --features tui' },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="section-divider"></div>
+
+  <!-- Phase Flow -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-surface)] via-[var(--color-bg)] to-[var(--color-bg)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('govctl.phase.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('govctl.phase.title')}
+        </h2>
+        <p class="text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto">
+          {t('govctl.phase.subtitle')}
+        </p>
+      </div>
+      <PhaseFlow />
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('govctl.features.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('govctl.features.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((feature) => (
+          <div class="group p-6 rounded-2xl border border-[var(--color-border)] bg-gradient-to-b from-[var(--color-surface-elevated)] to-[var(--color-surface)] hover:border-[var(--color-primary)]/50 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-primary)] mb-5 group-hover:scale-110 transition-transform duration-300">
+              <Icon name={feature.icon} class="w-6 h-6" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-[var(--color-text)] mb-3">{feature.title}</h3>
+            <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="section-divider"></div>
+
+  <!-- CLI Reference -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-surface)]/50 to-[var(--color-bg)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('govctl.cli.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('govctl.cli.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.validation')}</h3>
+          <Terminal
+            title="check"
+            lines={[
+              { prompt: true, text: 'govctl check' },
+              { text: '<span class="text-[var(--color-stable)]">✓</span> All 12 RFCs valid', dim: false },
+              { text: '<span class="text-[var(--color-stable)]">✓</span> All 8 ADRs valid', dim: false },
+              { text: '<span class="text-[var(--color-stable)]">✓</span> All 5 work items valid', dim: false },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.listing')}</h3>
+          <Terminal
+            title="list"
+            lines={[
+              { prompt: true, text: 'govctl rfc list' },
+              { prompt: true, text: 'govctl adr list' },
+              { prompt: true, text: 'govctl work list' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.creating')}</h3>
+          <Terminal
+            title="new"
+            lines={[
+              { prompt: true, text: 'govctl rfc new "Feature Title"' },
+              { prompt: true, text: 'govctl adr new "Decision Title"' },
+              { prompt: true, text: 'govctl work new "Task Title"' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.lifecycle')}</h3>
+          <Terminal
+            title="lifecycle"
+            lines={[
+              { prompt: true, text: 'govctl rfc finalize RFC-0001 normative' },
+              { prompt: true, text: 'govctl rfc advance RFC-0001 impl' },
+              { prompt: true, text: 'govctl rfc advance RFC-0001 stable' },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who This Is For -->
+  <section class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('govctl.fit.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('govctl.fit.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div class="p-8 rounded-2xl border border-[var(--color-stable)]/20 bg-gradient-to-b from-[var(--color-stable)]/5 to-transparent">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-[var(--color-stable)]/10 flex items-center justify-center">
+              <Icon name="heroicons:check" class="w-5 h-5 text-[var(--color-stable)]" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-[var(--color-stable)]">{t('govctl.fit.good')}</h3>
+          </div>
+          <ul class="space-y-4 text-sm text-[var(--color-text-secondary)]">
+            {goodFit.map((item) => (
+              <li class="flex items-start gap-3">
+                <Icon name="heroicons:check" class="w-5 h-5 text-[var(--color-stable)] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="p-8 rounded-2xl border border-red-500/20 bg-gradient-to-b from-red-500/5 to-transparent">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+              <Icon name="heroicons:x-mark" class="w-5 h-5 text-red-400" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-red-400">{t('govctl.fit.notFor')}</h3>
+          </div>
+          <ul class="space-y-4 text-sm text-[var(--color-text-secondary)]">
+            {notFor.map((item) => (
+              <li class="flex items-start gap-3">
+                <Icon name="heroicons:x-mark" class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

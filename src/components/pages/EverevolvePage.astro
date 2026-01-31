@@ -1,0 +1,92 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const capabilities = [
+  {
+    text: t('everevolve.cap.1'),
+    icon: 'heroicons:chart-bar',
+  },
+  {
+    text: t('everevolve.cap.2'),
+    icon: 'heroicons:document-text',
+  },
+  {
+    text: t('everevolve.cap.3'),
+    icon: 'heroicons:light-bulb',
+  },
+  {
+    text: t('everevolve.cap.4'),
+    icon: 'heroicons:arrow-path',
+  },
+  {
+    text: t('everevolve.cap.5'),
+    icon: 'heroicons:bolt',
+  },
+];
+---
+
+<Base title="everevolve" description={t('everevolve.hero.desc')} lang={lang}>
+  <section class="hero-gradient noise-overlay relative py-32 md:py-40 overflow-hidden">
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 grid-pattern opacity-30"></div>
+
+    <!-- Gradient orbs -->
+    <div class="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-[var(--color-primary)]/15 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="max-w-2xl mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-8">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-text-muted)]/10 text-[var(--color-text-muted)] border border-[var(--color-text-muted)]/20">
+            {t('status.soon')}
+          </span>
+        </div>
+
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 border border-[var(--color-primary)]/20 flex items-center justify-center mx-auto mb-8 text-[var(--color-primary)] font-mono font-bold text-3xl">
+          E
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-bold mb-8 font-mono">
+          <span class="text-gradient">everevolve</span>
+        </h1>
+
+        <p class="text-xl text-[var(--color-text-secondary)] mb-12 leading-relaxed">
+          {t('everevolve.hero.desc')}
+        </p>
+
+        <div class="p-8 rounded-2xl border border-[var(--color-border)] bg-gradient-to-b from-[var(--color-surface-elevated)] to-[var(--color-surface)] text-left mb-10">
+          <h2 class="font-semibold text-lg text-[var(--color-text)] mb-6">{t('everevolve.capabilities.title')}</h2>
+          <ul class="space-y-4">
+            {capabilities.map((cap) => (
+              <li class="flex items-start gap-4 text-[var(--color-text-secondary)]">
+                <div class="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] flex-shrink-0">
+                  <Icon name={cap.icon} class="w-5 h-5" aria-hidden="true" />
+                </div>
+                <span class="pt-1">{cap.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <a
+          href="https://github.com/govctl-org"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary inline-flex items-center gap-2 px-6 py-3.5 text-[var(--color-text)] font-medium rounded-xl"
+        >
+          <Icon name="mdi:github" class="w-5 h-5" aria-hidden="true" />
+          {t('everevolve.cta')}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

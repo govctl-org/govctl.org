@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://govctl.org/sitemap-index.xml

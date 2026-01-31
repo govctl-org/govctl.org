@@ -1,0 +1,71 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  name: string;
+  description: string;
+  status: 'live' | 'soon';
+  href: string;
+  icon?: string;
+}
+
+const { name, description, status, href, icon } = Astro.props;
+
+const statusConfig = {
+  live: {
+    label: 'Live',
+    color: 'var(--color-stable)',
+    bg: 'rgba(74, 222, 128, 0.1)',
+    border: 'rgba(74, 222, 128, 0.2)',
+  },
+  soon: {
+    label: 'Coming Soon',
+    color: 'var(--color-text-muted)',
+    bg: 'rgba(113, 113, 122, 0.08)',
+    border: 'rgba(113, 113, 122, 0.15)',
+  },
+};
+
+const s = statusConfig[status];
+---
+
+<a
+  href={href}
+  class="product-card card-glow group relative block p-7 rounded-2xl border border-[var(--color-border)] bg-gradient-to-b from-[var(--color-surface-elevated)] to-[var(--color-surface)] overflow-hidden"
+>
+  <!-- Hover gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+  <!-- Top shine -->
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+  <div class="relative">
+    <div class="flex items-start justify-between mb-6">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 border border-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] font-mono font-bold text-xl group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[var(--color-primary)]/20 transition-all duration-300">
+        {icon || name.charAt(0).toUpperCase()}
+      </div>
+      <span
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border"
+        style={`color: ${s.color}; background: ${s.bg}; border-color: ${s.border};`}
+      >
+        {status === 'live' && (
+          <span class="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></span>
+        )}
+        {s.label}
+      </span>
+    </div>
+
+    <h3 class="text-xl font-semibold text-[var(--color-text)] mb-3 group-hover:text-[var(--color-primary)] transition-colors duration-300 font-mono tracking-tight">
+      {name}
+    </h3>
+
+    <p class="text-sm text-[var(--color-text-muted)] leading-relaxed mb-5">
+      {description}
+    </p>
+
+    <div class="flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-1">
+      <span>Learn more</span>
+      <Icon name="heroicons:arrow-right" class="w-4 h-4" aria-hidden="true" />
+    </div>
+  </div>
+</a>

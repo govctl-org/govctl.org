@@ -1,0 +1,112 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const url = Astro.url;
+const lang = Astro.props.lang || getLangFromUrl(url);
+const t = useTranslations(lang);
+const langPrefix = lang === 'en' ? '' : `/${lang}`;
+
+const products = [
+  { href: `${langPrefix}/products/govctl`, label: 'govctl', status: 'live' },
+  { href: `${langPrefix}/products/skillc`, label: 'skillc', status: 'live' },
+  { href: `${langPrefix}/products/jjgov`, label: 'jjgov', status: 'soon' },
+  { href: `${langPrefix}/products/everevolve`, label: 'everevolve', status: 'soon' },
+];
+
+const resources = [
+  { href: 'https://govctl-org.github.io/govctl/', label: t('common.documentation'), external: true },
+  { href: 'https://github.com/govctl-org/govctl', label: 'GitHub', external: true },
+  { href: 'https://crates.io/crates/govctl', label: 'Crates.io', external: true },
+];
+
+const homeHref = langPrefix || '/';
+---
+
+<footer class="relative border-t border-[var(--color-border)]/50 bg-gradient-to-b from-[var(--color-bg)] to-[var(--color-surface)]/30">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <!-- Brand -->
+      <div class="md:col-span-2">
+        <a href={homeHref} class="flex items-center gap-3 mb-5">
+          <img
+            src="/logo-icon.svg"
+            alt="govctl logo"
+            class="w-9 h-9"
+          />
+          <span class="font-semibold text-lg text-[var(--color-text)]">
+            govctl
+          </span>
+        </a>
+        <p class="text-[var(--color-text-muted)] text-sm max-w-sm mb-6 leading-relaxed">
+          {t('footer.tagline')}
+        </p>
+        <a
+          href="https://github.com/govctl-org/govctl"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/50 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-primary)]/50 transition-all duration-200"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="w-2 h-2 rounded-full bg-[var(--color-primary)]"></span>
+          governed by govctl
+        </a>
+      </div>
+
+      <!-- Products -->
+      <div>
+        <h3 class="text-sm font-semibold text-[var(--color-text)] mb-5">{t('footer.products')}</h3>
+        <ul class="space-y-3">
+          {products.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors inline-flex items-center gap-2"
+              >
+                {item.label}
+                {item.status === 'live' && (
+                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-stable)]"></span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h3 class="text-sm font-semibold text-[var(--color-text)] mb-5">{t('footer.resources')}</h3>
+        <ul class="space-y-3">
+          {resources.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors inline-flex items-center gap-1"
+                target={item.external ? '_blank' : undefined}
+              >
+                {item.label}
+                {item.external && (
+                  <Icon name="heroicons:arrow-top-right-on-square" class="w-3 h-3 opacity-50" aria-hidden="true" />
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="mt-16 pt-8 border-t border-[var(--color-border)]/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-xs text-[var(--color-text-muted)]">
+        {t('footer.copyright')}
+      </p>
+      <p class="text-xs text-[var(--color-text-muted)] italic opacity-60">
+        "Discipline is not the opposite of creativity. It is the foundation."
+      </p>
+    </div>
+  </div>
+</footer>

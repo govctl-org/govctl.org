@@ -1,0 +1,364 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Terminal from '../Terminal.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const features = [
+  {
+    title: t('skillc.feature.scaffold'),
+    description: t('skillc.feature.scaffold.desc'),
+    icon: 'heroicons:plus',
+  },
+  {
+    title: t('skillc.feature.lint'),
+    description: t('skillc.feature.lint.desc'),
+    icon: 'heroicons:check-circle',
+  },
+  {
+    title: t('skillc.feature.compile'),
+    description: t('skillc.feature.compile.desc'),
+    icon: 'heroicons:beaker',
+  },
+  {
+    title: t('skillc.feature.search'),
+    description: t('skillc.feature.search.desc'),
+    icon: 'heroicons:magnifying-glass',
+  },
+  {
+    title: t('skillc.feature.analytics'),
+    description: t('skillc.feature.analytics.desc'),
+    icon: 'heroicons:chart-bar',
+  },
+  {
+    title: t('skillc.feature.mcp'),
+    description: t('skillc.feature.mcp.desc'),
+    icon: 'heroicons:bolt',
+  },
+];
+---
+
+<Base title="skillc" description={`${t('skillc.hero.desc')} ${t('skillc.hero.descLink')} ${t('skillc.hero.descAfter')}`} lang={lang}>
+  <!-- Hero -->
+  <section class="hero-gradient noise-overlay relative py-24 md:py-32 overflow-hidden">
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 grid-pattern opacity-30"></div>
+
+    <!-- Gradient orbs -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--color-primary)]/15 rounded-full blur-[100px] -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-[var(--color-impl)]/10 rounded-full blur-[80px] translate-y-1/2"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left: Content -->
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-stable)]/10 text-[var(--color-stable)] border border-[var(--color-stable)]/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-stable)] animate-pulse"></span>
+              {t('status.live')}
+            </span>
+            <span class="text-sm text-[var(--color-text-muted)] font-mono">v0.1.0</span>
+          </div>
+
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 font-mono">
+            <span class="text-gradient">skillc</span>
+          </h1>
+
+          <p class="text-xl text-[var(--color-text-secondary)] max-w-lg mb-4 leading-relaxed">
+            {t('skillc.hero.desc')} <a href="https://agentskills.io/" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary-light)] hover:underline">{t('skillc.hero.descLink')}</a> {t('skillc.hero.descAfter')}
+          </p>
+
+          <p class="text-lg text-[var(--color-text-muted)] max-w-lg mb-10 leading-relaxed">
+            {t('skillc.hero.descMuted')}
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="https://govctl-org.github.io/skillc/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 text-white font-medium rounded-xl"
+            >
+              {t('common.documentation')}
+              <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4" aria-hidden="true" />
+            </a>
+            <a
+              href="https://github.com/govctl-org/skillc"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-secondary inline-flex items-center gap-2 px-6 py-3.5 text-[var(--color-text)] font-medium rounded-xl"
+            >
+              <Icon name="mdi:github" class="w-5 h-5" aria-hidden="true" />
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Install Terminal -->
+        <div class="w-full">
+          <Terminal
+            title="Install"
+            lines={[
+              { prompt: true, text: 'cargo install skillc' },
+              { text: '', dim: true },
+              { prompt: true, text: '# Creates the `skc` binary' },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="section-divider"></div>
+
+  <!-- Workflows -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-surface)] via-[var(--color-bg)] to-[var(--color-bg)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('skillc.workflows.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('skillc.workflows.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="p-8 rounded-2xl border border-[var(--color-primary)]/20 bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center">
+              <Icon name="heroicons:pencil-square" class="w-5 h-5 text-[var(--color-primary)]" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-[var(--color-primary-light)]">{t('skillc.workflows.authors')}</h3>
+          </div>
+          <p class="text-sm text-[var(--color-text-muted)] mb-6">{t('skillc.workflows.authors.desc')}</p>
+          <div class="font-mono text-sm text-[var(--color-text-secondary)] space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">1.</span>
+              <code class="text-[var(--color-primary-light)]">skc init</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.scaffold')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">2.</span>
+              <code class="text-[var(--color-primary-light)]">skc lint</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.validate')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">3.</span>
+              <code class="text-[var(--color-primary-light)]">skc build</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.testLocally')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">4.</span>
+              <code class="text-[var(--color-primary-light)]">skc stats</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.traceUsage')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">5.</span>
+              <code class="text-[var(--color-stable)]">git push</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.publish')}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-2xl border border-[var(--color-impl)]/20 bg-gradient-to-b from-[var(--color-impl)]/5 to-transparent">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-[var(--color-impl)]/10 flex items-center justify-center">
+              <Icon name="heroicons:bolt" class="w-5 h-5 text-[var(--color-impl)]" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-[var(--color-impl)]">{t('skillc.workflows.power')}</h3>
+          </div>
+          <p class="text-sm text-[var(--color-text-muted)] mb-6">{t('skillc.workflows.power.desc')}</p>
+          <div class="font-mono text-sm text-[var(--color-text-secondary)] space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">1.</span>
+              <code class="text-[var(--color-impl)]">skc build</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.enableIndexing')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">2.</span>
+              <code class="text-[var(--color-impl)]">skc search</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.findContent')}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[var(--color-text-muted)]">3.</span>
+              <code class="text-[var(--color-impl)]">skc stats</code>
+              <span class="text-[var(--color-text-muted)]">→ {t('skillc.step.trackUsage')}</span>
+            </div>
+          </div>
+          <p class="text-xs text-[var(--color-text-muted)] mt-6 italic">
+            {t('skillc.workflows.power.note')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('skillc.features.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('skillc.features.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((feature) => (
+          <div class="group p-6 rounded-2xl border border-[var(--color-border)] bg-gradient-to-b from-[var(--color-surface-elevated)] to-[var(--color-surface)] hover:border-[var(--color-primary)]/50 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-primary)] mb-5 group-hover:scale-110 transition-transform duration-300">
+              <Icon name={feature.icon} class="w-6 h-6" aria-hidden="true" />
+            </div>
+            <h3 class="font-semibold text-lg text-[var(--color-text)] mb-3">{feature.title}</h3>
+            <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section divider -->
+  <div class="section-divider"></div>
+
+  <!-- CLI Reference -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-surface)]/50 to-[var(--color-bg)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('govctl.cli.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('govctl.cli.title')}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('skillc.cli.authoring')}</h3>
+          <Terminal
+            title="author"
+            lines={[
+              { prompt: true, text: 'skc init my-skill' },
+              { prompt: true, text: 'skc lint my-skill' },
+              { prompt: true, text: 'skc build my-skill --target cursor' },
+              { prompt: true, text: 'skc list' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('skillc.cli.reading')}</h3>
+          <Terminal
+            title="read"
+            lines={[
+              { prompt: true, text: 'skc outline my-skill --level 2' },
+              { prompt: true, text: 'skc show my-skill --section "API"' },
+              { prompt: true, text: 'skc search my-skill "borrow checker"' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('skillc.cli.analytics')}</h3>
+          <Terminal
+            title="stats"
+            lines={[
+              { prompt: true, text: 'skc stats my-skill --group-by sections' },
+              { prompt: true, text: 'skc stats my-skill --group-by search' },
+              { prompt: true, text: 'skc sync --dry-run' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('skillc.cli.mcp')}</h3>
+          <Terminal
+            title="mcp"
+            lines={[
+              { prompt: true, text: 'skc mcp' },
+              { text: '<span class="text-[var(--color-text-muted)]"># Exposes: skc_outline, skc_show,</span>' },
+              { text: '<span class="text-[var(--color-text-muted)]"># skc_search, skc_build, skc_lint...</span>' },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lint Rules -->
+  <section class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('skillc.lint.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('skillc.lint.title')}
+        </h2>
+        <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+          {t('skillc.lint.subtitle')}
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        <div class="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center">
+          <div class="text-2xl font-bold font-mono text-[var(--color-primary)] mb-2">SKL1xx</div>
+          <div class="text-sm text-[var(--color-text-muted)]">{t('skillc.lint.frontmatter')}</div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-2">{t('skillc.lint.frontmatter.desc')}</div>
+        </div>
+        <div class="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center">
+          <div class="text-2xl font-bold font-mono text-[var(--color-primary)] mb-2">SKL2xx</div>
+          <div class="text-sm text-[var(--color-text-muted)]">{t('skillc.lint.structure')}</div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-2">{t('skillc.lint.structure.desc')}</div>
+        </div>
+        <div class="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center">
+          <div class="text-2xl font-bold font-mono text-[var(--color-primary)] mb-2">SKL3xx</div>
+          <div class="text-sm text-[var(--color-text-muted)]">{t('skillc.lint.links')}</div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-2">{t('skillc.lint.links.desc')}</div>
+        </div>
+        <div class="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center">
+          <div class="text-2xl font-bold font-mono text-[var(--color-primary)] mb-2">SKL4xx</div>
+          <div class="text-sm text-[var(--color-text-muted)]">{t('skillc.lint.files')}</div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-2">{t('skillc.lint.files.desc')}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Storage -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-surface)]/30 to-[var(--color-bg)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <p class="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide uppercase">{t('skillc.storage.label')}</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-6">
+          {t('skillc.storage.title')}
+        </h2>
+      </div>
+
+      <div class="max-w-2xl mx-auto font-mono text-sm">
+        <div class="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-[var(--color-text-muted)]">.skillc/skills/</div>
+            <div class="text-[var(--color-text-secondary)]">{t('skillc.storage.projectLocal')}</div>
+            <div class="text-[var(--color-text-muted)]">~/.skillc/skills/</div>
+            <div class="text-[var(--color-text-secondary)]">{t('skillc.storage.globalSource')}</div>
+            <div class="text-[var(--color-text-muted)]">~/.claude/skills/</div>
+            <div class="text-[var(--color-text-secondary)]">{t('skillc.storage.claudeRuntime')}</div>
+            <div class="text-[var(--color-text-muted)]">~/.cursor/skills/</div>
+            <div class="text-[var(--color-text-secondary)]">{t('skillc.storage.cursorRuntime')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

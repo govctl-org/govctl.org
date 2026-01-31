@@ -1,0 +1,264 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TagBadge from '../../components/TagBadge.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  // Filter for English posts only (slug starts with 'en/')
+  const enPosts = posts.filter((post) => post.slug.startsWith('en/'));
+
+  return enPosts.map((post) => ({
+    params: { slug: post.slug.replace('en/', '') },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Format dates
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdatedDate = post.data.updatedDate?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Get all English posts for prev/next navigation
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((p) => p.slug.startsWith('en/'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+// Helper to get display slug
+const getDisplaySlug = (slug: string) => slug.replace('en/', '');
+---
+
+<Base title={`${post.data.title} | govctl Blog`} description={post.data.description} lang={lang}>
+  <article class="pt-32 pb-20 px-6">
+    <div class="max-w-3xl mx-auto">
+      <!-- Back link -->
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors duration-200 mb-8 group"
+      >
+        <Icon name="heroicons:arrow-left" class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200" aria-hidden="true" />
+        {t('blog.backToBlog')}
+      </a>
+
+      <!-- Header -->
+      <header class="mb-12">
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-3 mb-6 text-sm font-mono text-[var(--color-text-muted)]">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {formattedDate}
+          </time>
+          {formattedUpdatedDate && (
+            <>
+              <span class="w-1 h-1 rounded-full bg-[var(--color-border)]"></span>
+              <span>Updated {formattedUpdatedDate}</span>
+            </>
+          )}
+          <span class="w-1 h-1 rounded-full bg-[var(--color-border)]"></span>
+          <span>{post.data.author}</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-6 leading-tight">
+          {post.data.title}
+        </h1>
+
+        <!-- Description -->
+        <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-6">
+          {post.data.description}
+        </p>
+
+        <!-- Tags -->
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <TagBadge tag={tag} size="md" />
+            ))}
+          </div>
+        )}
+      </header>
+
+      <!-- Divider -->
+      <div class="section-divider mb-12"></div>
+
+      <!-- Content -->
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- Divider -->
+      <div class="section-divider my-16"></div>
+
+      <!-- Navigation -->
+      <nav class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {prevPost ? (
+          <a
+            href={`/blog/${getDisplaySlug(prevPost.slug)}`}
+            class="group p-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50 transition-all duration-300"
+          >
+            <span class="text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider">{t('blog.previous')}</span>
+            <p class="text-[var(--color-text)] font-medium mt-1 group-hover:text-[var(--color-primary-light)] transition-colors">
+              {prevPost.data.title}
+            </p>
+          </a>
+        ) : (
+          <div></div>
+        )}
+
+        {nextPost && (
+          <a
+            href={`/blog/${getDisplaySlug(nextPost.slug)}`}
+            class="group p-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50 transition-all duration-300 text-right"
+          >
+            <span class="text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider">{t('blog.next')}</span>
+            <p class="text-[var(--color-text)] font-medium mt-1 group-hover:text-[var(--color-primary-light)] transition-colors">
+              {nextPost.data.title}
+            </p>
+          </a>
+        )}
+      </nav>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  /* Prose styles for blog content */
+  .prose {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    max-width: 65ch;
+  }
+
+  .prose h2 {
+    color: var(--color-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .prose h3 {
+    color: var(--color-text);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose a {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  .prose a:hover {
+    color: var(--color-primary);
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface-elevated);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    color: var(--color-primary-light);
+  }
+
+  .prose pre {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .prose ul,
+  .prose ol {
+    margin: 1.25rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose ul li::marker {
+    color: var(--color-primary);
+  }
+
+  .prose ol li::marker {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid var(--color-primary);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .prose hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border) 20%,
+      var(--color-primary-light) 50%,
+      var(--color-border) 80%,
+      transparent 100%
+    );
+    margin: 2.5rem 0;
+  }
+
+  .prose img {
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+  }
+</style>

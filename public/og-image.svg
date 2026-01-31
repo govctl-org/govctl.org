@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a5b4fc"/>
+    </linearGradient>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="50%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+    <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#6366f1" stroke-width="0.5" opacity="0.05"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Glow effect behind logo -->
+  <ellipse cx="280" cy="315" rx="200" ry="200" fill="#6366f1" opacity="0.15" filter="url(#glow)"/>
+
+  <!-- Logo - Phase cycle arcs -->
+  <g transform="translate(280, 315)">
+    <!-- Outer ring -->
+    <circle cx="0" cy="0" r="108" fill="none" stroke="#334155" stroke-width="1"/>
+
+    <!-- Four phase arcs -->
+    <path d="M0 -100 A100 100 0 0 1 100 0" fill="none" stroke="#60A5FA" stroke-width="14" stroke-linecap="round"/>
+    <path d="M100 0 A100 100 0 0 1 0 100" fill="none" stroke="#818CF8" stroke-width="14" stroke-linecap="round"/>
+    <path d="M0 100 A100 100 0 0 1 -100 0" fill="none" stroke="#A78BFA" stroke-width="14" stroke-linecap="round"/>
+    <path d="M-100 0 A100 100 0 0 1 0 -100" fill="none" stroke="#C084FC" stroke-width="14" stroke-linecap="round"/>
+
+    <!-- Phase gate dots -->
+    <circle cx="0" cy="-100" r="8" fill="#60A5FA"/>
+    <circle cx="100" cy="0" r="8" fill="#818CF8"/>
+    <circle cx="0" cy="100" r="8" fill="#A78BFA"/>
+    <circle cx="-100" cy="0" r="8" fill="#C084FC"/>
+
+    <!-- Center shield -->
+    <path d="M0 -60 L44 -40 L44 0 C44 28 24 48 0 60 C-24 48 -44 28 -44 0 L-44 -40 Z" fill="url(#shieldGradient)"/>
+    <path d="M-16 0 L-4 12 L20 -12" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Text content -->
+  <g transform="translate(520, 315)">
+    <!-- govctl -->
+    <text x="0" y="-20" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="96" font-weight="700" fill="url(#textGradient)">govctl</text>
+
+    <!-- Tagline -->
+    <text x="0" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="#e2e8f0">Determinism for AI Coding</text>
+
+    <!-- Subtitle -->
+    <text x="0" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#94a3b8">Opinionated governance tools for the age of AI assistants</text>
+  </g>
+
+  <!-- Phase labels at bottom -->
+  <g transform="translate(600, 580)">
+    <text x="-240" y="0" font-family="ui-monospace, monospace" font-size="16" fill="#60A5FA" text-anchor="middle">SPEC</text>
+    <text x="-80" y="0" font-family="ui-monospace, monospace" font-size="16" fill="#818CF8" text-anchor="middle">IMPL</text>
+    <text x="80" y="0" font-family="ui-monospace, monospace" font-size="16" fill="#A78BFA" text-anchor="middle">TEST</text>
+    <text x="240" y="0" font-family="ui-monospace, monospace" font-size="16" fill="#C084FC" text-anchor="middle">STABLE</text>
+
+    <!-- Arrows between phases (SVG paths, shifted up to align with text center) -->
+    <path d="M-172 -5 L-148 -5 M-152 -9 L-148 -5 L-152 -1" stroke="#475569" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-12 -5 L12 -5 M8 -9 L12 -5 L8 -1" stroke="#475569" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M148 -5 L172 -5 M168 -9 L172 -5 L168 -1" stroke="#475569" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,204 @@
+---
+import { Icon } from 'astro-icon/components';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
+const phases = [
+  {
+    name: 'spec',
+    label: 'SPEC',
+    color: 'var(--color-spec)',
+    glow: 'var(--glow-spec)',
+    description: t('phase.spec'),
+    icon: 'heroicons:document-text'
+  },
+  {
+    name: 'impl',
+    label: 'IMPL',
+    color: 'var(--color-impl)',
+    glow: 'var(--glow-impl)',
+    description: t('phase.impl'),
+    icon: 'heroicons:code-bracket'
+  },
+  {
+    name: 'test',
+    label: 'TEST',
+    color: 'var(--color-test)',
+    glow: 'var(--glow-test)',
+    description: t('phase.test'),
+    icon: 'heroicons:shield-check'
+  },
+  {
+    name: 'stable',
+    label: 'STABLE',
+    color: 'var(--color-stable)',
+    glow: 'var(--glow-stable)',
+    description: t('phase.stable'),
+    icon: 'heroicons:check'
+  },
+];
+---
+
+<div class="w-full phase-flow-container">
+  <!-- State Machine -->
+  <div class="state-machine">
+    {phases.map((phase, index) => (
+      <>
+        <!-- State Node -->
+        <div class="state-node group" data-phase={phase.name}>
+          <!-- State Box -->
+          <div
+            class="state-box relative flex items-center gap-3 cursor-default"
+            style={`border-color: ${phase.color}; color: ${phase.color}; background: linear-gradient(180deg, ${phase.color}15 0%, ${phase.color}05 100%);`}
+          >
+            <!-- Icon -->
+            <span class="opacity-80 group-hover:opacity-100 transition-opacity">
+              <Icon name={phase.icon} class="w-5 h-5" aria-hidden="true" />
+            </span>
+            <!-- Label -->
+            <span>{phase.label}</span>
+
+            <!-- Hover glow -->
+            <div
+              class="absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-lg"
+              style={`background: ${phase.color}40;`}
+            ></div>
+          </div>
+
+          <!-- Description (visible on hover) -->
+          <span class="mt-3 text-xs text-[var(--color-text-muted)] text-center max-w-[120px] opacity-0 group-hover:opacity-100 transition-all duration-300">
+            {phase.description}
+          </span>
+
+          <!-- Lock indicator -->
+          <div class="state-lock" style={`color: ${phase.color};`}>
+            <Icon name="heroicons:lock-closed-solid" class="w-3 h-3" aria-hidden="true" />
+            <span class="text-[10px] uppercase tracking-wider">{t('phase.locked')}</span>
+          </div>
+        </div>
+
+        <!-- Gate (between phases) -->
+        {index < phases.length - 1 && (
+          <div class="state-gate">
+            <div class="gate-line"></div>
+            <div class="gate-icon locked" title={t('phase.gate')}>
+              <Icon name="heroicons:check" class="w-4 h-4" aria-hidden="true" />
+            </div>
+            <div class="gate-line"></div>
+          </div>
+        )}
+      </>
+    ))}
+  </div>
+
+  <!-- Caption -->
+  <p class="text-center text-sm text-[var(--color-text-muted)] mt-8 font-mono">
+    {t('phase.noShortcuts')}
+  </p>
+</div>
+
+<style>
+  .state-machine {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+
+  .state-node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 2rem;
+  }
+
+  .state-gate {
+    display: flex;
+    align-items: center;
+    padding: 0 0.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .gate-line {
+    width: 1rem;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-border), var(--color-order));
+  }
+
+  .gate-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    transition: all 0.3s ease;
+  }
+
+  .gate-icon.locked {
+    background: var(--color-order);
+    border-color: var(--color-order);
+    color: white;
+    box-shadow: 0 0 12px var(--glow-order);
+  }
+
+  .state-lock {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .state-node:hover .state-lock {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .state-machine {
+      gap: 0.5rem;
+    }
+
+    .gate-line {
+      width: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { animatePhaseFlow } from '../lib/animations';
+
+  // Run animation when component is visible
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animatePhaseFlow(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  document.querySelectorAll('.phase-flow-container').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

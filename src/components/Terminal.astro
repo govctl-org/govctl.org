@@ -1,0 +1,76 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title?: string;
+  lines: Array<{ prompt?: boolean; text: string; dim?: boolean }>;
+  animate?: boolean;
+  showCursor?: boolean;
+}
+
+const { title = 'Terminal', lines, animate: shouldAnimate = true, showCursor = true } = Astro.props;
+const containerId = `terminal-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div
+  id={containerId}
+  class="terminal-container terminal-premium terminal-scanlines relative rounded-2xl overflow-hidden"
+  data-animate={shouldAnimate}
+>
+  <!-- Title bar -->
+  <div class="flex items-center gap-2 px-4 py-3 border-b border-[var(--color-border)]/50 bg-gradient-to-b from-[var(--color-surface-elevated)] to-[var(--color-surface)]">
+    <div class="flex gap-2">
+      <div class="w-3 h-3 rounded-full bg-[#ff5f57] shadow-[0_0_8px_rgba(255,95,87,0.5)]"></div>
+      <div class="w-3 h-3 rounded-full bg-[#febc2e] shadow-[0_0_8px_rgba(254,188,46,0.5)]"></div>
+      <div class="w-3 h-3 rounded-full bg-[#28c840] shadow-[0_0_8px_rgba(40,200,64,0.5)]"></div>
+    </div>
+    <div class="flex-1 text-center">
+      <span class="text-xs text-[var(--color-text-muted)] font-mono tracking-wide">{title}</span>
+    </div>
+    <div class="w-[52px]"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-5 font-mono text-sm leading-loose overflow-x-auto bg-[var(--color-bg)]">
+    {lines.map((line, index) => (
+      <div class={`terminal-line flex items-center ${line.dim ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'} ${line.text === '' ? 'h-5' : ''}`}>
+        {line.prompt && (
+          <span class="text-[var(--color-stable)] select-none mr-2 flex-shrink-0">
+            <Icon name="heroicons:chevron-right" class="w-3 h-3 inline-block" aria-hidden="true" />
+          </span>
+        )}
+        <span set:html={line.text} />
+        {showCursor && index === lines.length - 1 && line.text !== '' && (
+          <span class="terminal-cursor"></span>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <!-- Reflection effect -->
+  <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none h-1/3"></div>
+</div>
+
+<script>
+  import { animateTerminal } from '../lib/animations';
+
+  // Run animation when terminal is visible
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const container = entry.target as HTMLElement;
+          if (container.dataset.animate === 'true') {
+            animateTerminal(container);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  document.querySelectorAll('.terminal-container').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

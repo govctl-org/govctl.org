@@ -1,0 +1,85 @@
+---
+import { Icon } from 'astro-icon/components';
+import { languages, type Lang } from '../i18n/ui';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/utils';
+
+interface Props {
+  lang?: Lang;
+}
+
+const url = Astro.url;
+const lang = Astro.props.lang || getLangFromUrl(url);
+const t = useTranslations(lang);
+
+const langPrefix = lang === 'en' ? '' : `/${lang}`;
+
+const navItems = [
+  { href: `${langPrefix}/products/govctl`, label: 'govctl' },
+  { href: `${langPrefix}/products/skillc`, label: 'skillc' },
+  { href: `${langPrefix}/products/jjgov`, label: 'jjgov' },
+  { href: `${langPrefix}/products/everevolve`, label: 'everevolve' },
+  { href: `${langPrefix}/blog`, label: t('nav.blog') },
+];
+
+const homeHref = langPrefix || '/';
+
+// Get the alternate language path
+const alternateLang = lang === 'en' ? 'zh' : 'en';
+const alternatePath = getLocalizedPath(url, alternateLang as Lang);
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border)]/50 bg-[var(--color-bg)]/80 backdrop-blur-xl">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href={homeHref} class="flex items-center gap-3 group">
+      <img
+        src="/logo-icon.svg"
+        alt="govctl logo"
+        class="w-9 h-9 group-hover:scale-105 transition-transform"
+      />
+      <span class="font-semibold text-lg text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">
+        govctl
+      </span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="hidden md:flex items-center gap-1">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="px-3 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]/80 rounded-lg transition-all duration-200"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-3">
+      <!-- Language Switcher -->
+      <a
+        href={alternatePath}
+        class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]/80 rounded-lg transition-all duration-200"
+        title={languages[alternateLang as Lang]}
+        aria-label={`Switch to ${languages[alternateLang as Lang]}`}
+      >
+        <Icon name="heroicons:language" class="w-4 h-4" aria-hidden="true" />
+        <span class="hidden sm:inline">{languages[alternateLang as Lang]}</span>
+      </a>
+
+      <a
+        href="https://github.com/govctl-org"
+        class="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-[var(--color-surface)] hover:bg-[var(--color-surface-elevated)] border border-[var(--color-border)] hover:border-[var(--color-text-muted)]/50 text-[var(--color-text)] rounded-xl transition-all duration-200"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View on GitHub (opens in new tab)"
+      >
+        <Icon name="mdi:github" class="w-4 h-4" aria-hidden="true" />
+        <span class="hidden sm:inline">GitHub</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer for fixed header -->
+<div class="h-16"></div>
