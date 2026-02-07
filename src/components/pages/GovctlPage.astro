@@ -5,6 +5,7 @@ import Terminal from '../Terminal.astro';
 import PhaseFlow from '../PhaseFlow.astro';
 import { useTranslations } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
+import { getVersions } from '../../lib/versions';
 
 interface Props {
   lang: Lang;
@@ -12,6 +13,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const versions = await getVersions();
 
 const features = [
   {
@@ -78,7 +80,7 @@ const notFor = [
               <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-stable)] animate-pulse"></span>
               {t('status.live')}
             </span>
-            <span class="text-sm text-[var(--color-text-muted)] font-mono">v0.3.0</span>
+            <span class="text-sm text-[var(--color-text-muted)] font-mono">v{versions.govctl}</span>
           </div>
 
           <h1 class="text-5xl md:text-6xl font-bold mb-6 font-mono">
