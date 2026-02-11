@@ -1,5 +1,8 @@
 ---
 import SkillcPage from '../../components/pages/SkillcPage.astro';
+
+// Enable SSR (ISR caching configured in astro.config.mjs)
+export const prerender = false;
 ---
 
 <SkillcPage lang="en" />
