@@ -2,9 +2,12 @@
 title: "Introducing govctl: Governance for AI Coding"
 description: "AI coding assistants are powerful but undisciplined. govctl brings structure, traceability, and phase discipline to AI-assisted development workflows."
 pubDate: 2026-01-18
+updatedDate: 2026-03-03
 tags: ["announcement", "govctl", "ai-coding"]
 author: "govctl team"
 ---
+
+> Looking for the latest workflow updates? Read [govctl 0.5.3: Migrate Skill and Agent Workflows](/blog/govctl-0-5-3-migrate-and-agent-workflows).
 
 AI coding assistants have fundamentally changed how we build software. Tools like Claude, Cursor, and GitHub Copilot can generate entire functions, refactor codebases, and even architect systems. But with this power comes a problem: **AI coding is undisciplined**.
 
@@ -20,7 +23,7 @@ The result: faster typing, slower thinking, unmaintainable systems.
 
 ### Without govctl
 
-```
+```text
 Day 1:  "Let's add caching!"
 Day 2:  AI generates 500 lines of Redis integration
 Day 7:  "Wait, did we agree on Redis or Memcached?"
@@ -30,7 +33,7 @@ Day 30: Two incompatible caching layers, no spec, nobody knows why
 
 ### With govctl
 
-```
+```text
 Day 1:  govctl rfc new "Caching Strategy"
 Day 2:  RFC-0015 defines: Redis, TTL policy, invalidation rules
 Day 3:  govctl rfc advance RFC-0015 impl
@@ -54,7 +57,7 @@ govctl manages three artifact types:
 - **ADRs** — Architectural decisions with explicit consequences
 - **Work Items** — Tracked tasks tied to governance artifacts
 
-```
+```text
 ┌─────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
 │  SPEC   │ ──► │   IMPL   │ ──► │   TEST   │ ──► │  STABLE  │
 └─────────┘     └──────────┘     └──────────┘     └──────────┘
@@ -81,7 +84,7 @@ govctl rfc new "Add user authentication"
 
 govctl creates governance artifacts in the `gov/` directory:
 
-```
+```text
 gov/
 ├── config.toml       # Configuration
 ├── rfc/              # RFC sources (JSON + clauses)

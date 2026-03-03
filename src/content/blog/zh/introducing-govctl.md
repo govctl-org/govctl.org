@@ -2,9 +2,12 @@
 title: "govctl 简介：AI 编程的治理"
 description: "AI 编程助手功能强大但缺乏规范。govctl 为 AI 辅助开发工作流带来结构化、可追溯性和阶段规范。"
 pubDate: 2026-01-18
+updatedDate: 2026-03-03
 tags: ["公告", "govctl", "AI编程"]
 author: "govctl 团队"
 ---
+
+> 想看最新工作流更新？请阅读 [govctl 0.5.3：migrate 技能与代理工作流](/zh/blog/govctl-0-5-3-migrate-and-agent-workflows)。
 
 AI 编程助手从根本上改变了我们构建软件的方式。Claude、Cursor 和 GitHub Copilot 等工具可以生成完整的函数、重构代码库，甚至设计系统架构。但这种能力也带来了一个问题：**AI 编程缺乏规范**。
 
@@ -20,7 +23,7 @@ AI 编程助手从根本上改变了我们构建软件的方式。Claude、Curso
 
 ### 没有 govctl
 
-```
+```text
 第1天：  "让我们加个缓存！"
 第2天：  AI 生成 500 行 Redis 集成代码
 第7天：  "等等，我们商定的是 Redis 还是 Memcached？"
@@ -30,7 +33,7 @@ AI 编程助手从根本上改变了我们构建软件的方式。Claude、Curso
 
 ### 使用 govctl
 
-```
+```text
 第1天：  govctl rfc new "缓存策略"
 第2天：  RFC-0015 定义：Redis、TTL 策略、失效规则
 第3天：  govctl rfc advance RFC-0015 impl
@@ -54,7 +57,7 @@ govctl 管理三种工件类型：
 - **ADR** — 带有明确后果的架构决策记录
 - **工作项** — 与治理工件关联的跟踪任务
 
-```
+```text
 ┌─────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
 │  SPEC   │ ──► │   IMPL   │ ──► │   TEST   │ ──► │  STABLE  │
 └─────────┘     └──────────┘     └──────────┘     └──────────┘
@@ -81,7 +84,7 @@ govctl rfc new "添加用户认证"
 
 govctl 在 `gov/` 目录中创建治理工件：
 
-```
+```text
 gov/
 ├── config.toml       # 配置
 ├── rfc/              # RFC 源文件（JSON + 条款）

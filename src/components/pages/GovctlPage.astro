@@ -117,11 +117,14 @@ const notFor = [
         <!-- Right: Install Terminal -->
         <div class="w-full">
           <Terminal
-            title="Install"
+            title={t('common.install')}
             lines={[
               { prompt: true, text: 'cargo install govctl' },
               { text: '', dim: true },
-              { prompt: true, text: '# Or with TUI dashboard' },
+              { prompt: true, text: 'govctl init' },
+              { text: t('govctl.install.initHint'), dim: true },
+              { text: '', dim: true },
+              { text: t('govctl.install.tuiOptionalHint'), dim: true },
               { prompt: true, text: 'cargo install govctl --features tui' },
             ]}
           />
@@ -235,6 +238,7 @@ const notFor = [
             lines={[
               { prompt: true, text: 'govctl rfc finalize RFC-0001 normative' },
               { prompt: true, text: 'govctl rfc advance RFC-0001 impl' },
+              { prompt: true, text: 'govctl rfc advance RFC-0001 test' },
               { prompt: true, text: 'govctl rfc advance RFC-0001 stable' },
             ]}
           />
