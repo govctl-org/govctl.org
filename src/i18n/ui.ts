@@ -163,11 +163,15 @@ export const ui = {
     "common.learnMore": "Learn more",
     "common.documentation": "Documentation",
     "common.install": "Install",
+    "govctl.install.initHint":
+      "# Installs governance scaffolding and agent skills",
+    "govctl.install.tuiOptionalHint": "# Optional: with TUI dashboard",
 
     // govctl product page
     "govctl.hero.desc":
       "Opinionated governance CLI for RFC-driven AI-assisted software development.",
-    "govctl.hero.descMuted": "Enforce phase discipline on every feature.",
+    "govctl.hero.descMuted":
+      "Enforce phase discipline, then scale it with agent workflows.",
     "govctl.phase.label": "Core Concept",
     "govctl.phase.title": "Phase Discipline",
     "govctl.phase.subtitle":
@@ -191,7 +195,7 @@ export const ui = {
       "Continuous checks ensure code matches specifications. Drift is detected instantly.",
     "govctl.feature.ai": "AI Integration",
     "govctl.feature.ai.desc":
-      "Works with any shell-capable AI agent. Claude, Cursor, Codex—all supported.",
+      "Built for shell-capable agents with reusable workflows like /gov and /migrate.",
     "govctl.cli.label": "Reference",
     "govctl.cli.title": "CLI Commands",
     "govctl.cli.validation": "Validation",
@@ -205,7 +209,7 @@ export const ui = {
     "govctl.fit.good.1":
       'Teams frustrated by AI "code now, think later" patterns',
     "govctl.fit.good.2":
-      "Projects where specifications drift from implementations",
+      "Existing projects that need to adopt governance without starting over",
     "govctl.fit.good.3":
       "Organizations needing audit trails for AI-generated code",
     "govctl.fit.good.4": "Developers who believe discipline enables velocity",
@@ -448,10 +452,13 @@ export const ui = {
     "common.learnMore": "了解更多",
     "common.documentation": "文档",
     "common.install": "安装",
+    "govctl.install.initHint": "# 安装治理脚手架和 Agent Skills",
+    "govctl.install.tuiOptionalHint": "# 可选：启用 TUI 仪表板",
 
     // govctl product page
     "govctl.hero.desc": "用于 RFC 驱动的 AI 辅助软件开发的治理 CLI。",
-    "govctl.hero.descMuted": "为每个功能强制执行阶段规范。",
+    "govctl.hero.descMuted":
+      "为每个功能强制执行阶段规范，并通过代理工作流扩展执行力。",
     "govctl.phase.label": "核心概念",
     "govctl.phase.title": "阶段规范",
     "govctl.phase.subtitle": "每个功能都必须经过强制阶段推进，不可跳过。",
@@ -472,7 +479,7 @@ export const ui = {
       "持续检查确保代码符合规范。偏差会被立即检测。",
     "govctl.feature.ai": "AI 集成",
     "govctl.feature.ai.desc":
-      "与任何支持 shell 的 AI 代理兼容。Claude、Cursor、Codex——全部支持。",
+      "面向支持 shell 的 AI 代理，提供 /gov 与 /migrate 等可复用工作流。",
     "govctl.cli.label": "参考",
     "govctl.cli.title": "CLI 命令",
     "govctl.cli.validation": "验证",
@@ -484,7 +491,7 @@ export const ui = {
     "govctl.fit.good": "适合",
     "govctl.fit.notFor": "不适合",
     "govctl.fit.good.1": '对 AI "先写代码，后思考" 模式感到沮丧的团队',
-    "govctl.fit.good.2": "规范与实现经常偏离的项目",
+    "govctl.fit.good.2": "不想推倒重来、但需要补齐治理的存量项目",
     "govctl.fit.good.3": "需要 AI 生成代码审计轨迹的组织",
     "govctl.fit.good.4": "相信规范能够加速开发的开发者",
     "govctl.fit.bad.1": '"快速行动，打破常规" 的工作流',

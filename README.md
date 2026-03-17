@@ -26,10 +26,16 @@ bun run preview
 
 ## Products
 
-- **govctl** — Opinionated governance CLI for RFC-driven AI-assisted development
+- **govctl** — Governance-as-code CLI for AI-assisted development with phase discipline and agent workflow integration
 - **skillc** — Agent skill compiler (coming soon)
 - **jjgov** — Multi-agent collaboration workflows (coming soon)
 - **everevolve** — Project rules from commit history (coming soon)
+
+## Latest govctl Updates Reflected Here
+
+- `govctl` product messaging now emphasizes AI-agent integration through skill-based workflows (`/gov`, `/migrate`, `/discuss`, `/commit`, `/quick`)
+- Existing project adoption is highlighted through the `/migrate` workflow
+- Release narrative and blog content track the current `0.5.x` line
 
 ## License
 
