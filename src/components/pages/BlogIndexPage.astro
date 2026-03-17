@@ -20,14 +20,14 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 // Filter by locale (slug starts with 'en/' or 'zh/')
 const posts = allPosts
-  .filter((post) => post.slug.startsWith(`${lang}/`))
+  .filter((post) => post.id.startsWith(`${lang}/`))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Extract all unique tags
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
 // Helper to get display slug (without locale prefix)
-const getDisplaySlug = (slug: string) => slug.replace(`${lang}/`, '');
+const getDisplaySlug = (id: string) => id.replace(`${lang}/`, '');
 ---
 
 <Base title={`${t('blog.title')} | govctl`} description={t('blog.subtitle')} lang={lang}>
@@ -88,7 +88,7 @@ const getDisplaySlug = (slug: string) => slug.replace(`${lang}/`, '');
               description={post.data.description}
               pubDate={post.data.pubDate}
               tags={post.data.tags}
-              slug={getDisplaySlug(post.slug)}
+              slug={getDisplaySlug(post.id)}
               lang={lang}
             />
           ))}
