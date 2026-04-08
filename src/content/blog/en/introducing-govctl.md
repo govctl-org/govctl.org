@@ -2,12 +2,12 @@
 title: "Introducing govctl: Governance for AI Coding"
 description: "AI coding assistants are powerful but undisciplined. govctl brings structure, traceability, and phase discipline to AI-assisted development workflows."
 pubDate: 2026-01-18
-updatedDate: 2026-03-03
+updatedDate: 2026-04-08
 tags: ["announcement", "govctl", "ai-coding"]
 author: "govctl team"
 ---
 
-> Looking for the latest workflow updates? Read [govctl 0.5.3: Migrate Skill and Agent Workflows](/blog/govctl-0-5-3-migrate-and-agent-workflows).
+> Looking for the latest workflow updates? Read [govctl v0.8.x: Canonical Edit, Simpler Planning, and Help You Can Trust](/blog/govctl-v08x-canonical-edit-and-help-contracts).
 
 AI coding assistants have fundamentally changed how we build software. Tools like Claude, Cursor, and GitHub Copilot can generate entire functions, refactor codebases, and even architect systems. But with this power comes a problem: **AI coding is undisciplined**.
 

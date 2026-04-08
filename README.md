@@ -35,7 +35,7 @@ bun run preview
 
 - `govctl` product messaging now emphasizes AI-agent integration through skill-based workflows (`/gov`, `/migrate`, `/discuss`, `/commit`, `/quick`)
 - Existing project adoption is highlighted through the `/migrate` workflow
-- Release narrative and blog content track the current `0.5.x` line
+- Release narrative and blog content track the current `0.8.x` line
 
 ## License
 

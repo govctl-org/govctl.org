@@ -2,12 +2,12 @@
 title: "govctl 简介：AI 编程的治理"
 description: "AI 编程助手功能强大但缺乏规范。govctl 为 AI 辅助开发工作流带来结构化、可追溯性和阶段规范。"
 pubDate: 2026-01-18
-updatedDate: 2026-03-03
+updatedDate: 2026-04-08
 tags: ["公告", "govctl", "AI编程"]
 author: "govctl 团队"
 ---
 
-> 想看最新工作流更新？请阅读 [govctl 0.5.3：migrate 技能与代理工作流](/zh/blog/govctl-0-5-3-migrate-and-agent-workflows)。
+> 想看最新工作流更新？请阅读 [govctl v0.8.x：canonical edit、简化命令规划与可依赖的帮助文案](/zh/blog/govctl-v08x-canonical-edit-and-help-contracts)。
 
 AI 编程助手从根本上改变了我们构建软件的方式。Claude、Cursor 和 GitHub Copilot 等工具可以生成完整的函数、重构代码库，甚至设计系统架构。但这种能力也带来了一个问题：**AI 编程缺乏规范**。
 
