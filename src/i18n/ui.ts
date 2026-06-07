@@ -118,7 +118,7 @@ export const ui = {
     "products.subtitle": "A complete toolkit for governed AI development.",
     "product.govctl.role": "Enforce",
     "product.govctl.desc":
-      "Opinionated governance CLI for RFC-driven AI-assisted software development. Enforce phase discipline on every feature.",
+      "Opinionated governance CLI for RFC-driven AI-assisted software development, with local loops, search, verification guards, and a read-only TUI cockpit.",
     "product.skillc.role": "Define",
     "product.skillc.desc":
       "Development kit for Agent Skills. Author, validate, optimize, and instrument skills for AI agents.",
@@ -165,13 +165,14 @@ export const ui = {
     "common.install": "Install",
     "govctl.install.initHint":
       "# Installs governance scaffolding and agent skills",
-    "govctl.install.tuiOptionalHint": "# Optional: with TUI dashboard",
+    "govctl.install.tuiDefaultHint": "# TUI cockpit is included by default",
+    "govctl.install.minimalHint": "# Minimal install without TUI dependencies",
 
     // govctl product page
     "govctl.hero.desc":
       "Opinionated governance CLI for RFC-driven AI-assisted software development.",
     "govctl.hero.descMuted":
-      "Enforce phase discipline, then scale it with agent workflows.",
+      "Enforce phase discipline, coordinate local loops, search governed artifacts, and inspect project state from a read-only cockpit.",
     "govctl.phase.label": "Core Concept",
     "govctl.phase.title": "Phase Discipline",
     "govctl.phase.subtitle":
@@ -186,22 +187,24 @@ export const ui = {
       "Architectural Decision Records with explicit consequences and traceability.",
     "govctl.feature.work": "Work Items",
     "govctl.feature.work.desc":
-      "Tasks linked back to governance artifacts. Every change is authorized by a spec.",
+      "Tasks linked back to governance artifacts, with explicit execution dependencies for planned batches.",
     "govctl.feature.gates": "Phase Gates",
     "govctl.feature.gates.desc":
       "Enforce spec → impl → test → stable progression. No shortcuts.",
-    "govctl.feature.validation": "Validation",
+    "govctl.feature.validation": "Search & Diagnostics",
     "govctl.feature.validation.desc":
-      "Continuous checks ensure code matches specifications. Drift is detected instantly.",
-    "govctl.feature.ai": "AI Integration",
+      "Find governed artifacts with local indexed search, then use coded diagnostics to catch drift.",
+    "govctl.feature.ai": "Loops & TUI Cockpit",
     "govctl.feature.ai.desc":
-      "Built for shell-capable agents with reusable workflows like /gov and /migrate.",
+      "Coordinate local execution rounds in loops and inspect project state through a read-only terminal cockpit.",
     "govctl.cli.label": "Reference",
     "govctl.cli.title": "CLI Commands",
     "govctl.cli.validation": "Validation",
-    "govctl.cli.listing": "Listing",
+    "govctl.cli.listing": "Discovery",
     "govctl.cli.creating": "Creating Artifacts",
     "govctl.cli.lifecycle": "Lifecycle",
+    "govctl.cli.execution": "Execution Loops",
+    "govctl.cli.cockpit": "TUI Cockpit",
     "govctl.fit.label": "Fit",
     "govctl.fit.title": "Who This Is For",
     "govctl.fit.good": "Good Fit",
@@ -408,7 +411,7 @@ export const ui = {
     "products.subtitle": "面向治理型 AI 开发的完整工具包。",
     "product.govctl.role": "强制执行",
     "product.govctl.desc":
-      "用于 RFC 驱动的 AI 辅助软件开发的治理 CLI。为每个功能强制执行阶段规范。",
+      "用于 RFC 驱动的 AI 辅助软件开发的治理 CLI，提供本地 loop、搜索、验证 guard 和只读 TUI cockpit。",
     "product.skillc.role": "定义",
     "product.skillc.desc":
       "Agent Skills 开发工具包。创作、验证、优化和追踪 AI 代理技能。",
@@ -453,12 +456,13 @@ export const ui = {
     "common.documentation": "文档",
     "common.install": "安装",
     "govctl.install.initHint": "# 安装治理脚手架和 Agent Skills",
-    "govctl.install.tuiOptionalHint": "# 可选：启用 TUI 仪表板",
+    "govctl.install.tuiDefaultHint": "# TUI cockpit 默认包含",
+    "govctl.install.minimalHint": "# 不包含 TUI 依赖的最小安装",
 
     // govctl product page
     "govctl.hero.desc": "用于 RFC 驱动的 AI 辅助软件开发的治理 CLI。",
     "govctl.hero.descMuted":
-      "为每个功能强制执行阶段规范，并通过代理工作流扩展执行力。",
+      "强制执行阶段规范，协调本地 loop，搜索治理制品，并通过只读 cockpit 检查项目状态。",
     "govctl.phase.label": "核心概念",
     "govctl.phase.title": "阶段规范",
     "govctl.phase.subtitle": "每个功能都必须经过强制阶段推进，不可跳过。",
@@ -470,22 +474,25 @@ export const ui = {
     "govctl.feature.adr": "ADR 追踪",
     "govctl.feature.adr.desc": "架构决策记录，具有明确的后果和可追溯性。",
     "govctl.feature.work": "工作项",
-    "govctl.feature.work.desc": "任务链接回治理工件。每个变更都由规范授权。",
+    "govctl.feature.work.desc":
+      "任务链接回治理工件，并用显式依赖关系组织成批执行。",
     "govctl.feature.gates": "阶段门禁",
     "govctl.feature.gates.desc":
       "强制执行 spec → impl → test → stable 进程。不可跳过。",
-    "govctl.feature.validation": "验证",
+    "govctl.feature.validation": "搜索与诊断",
     "govctl.feature.validation.desc":
-      "持续检查确保代码符合规范。偏差会被立即检测。",
-    "govctl.feature.ai": "AI 集成",
+      "用本地索引搜索治理制品，并通过带代码的诊断及时发现偏差。",
+    "govctl.feature.ai": "Loop 与 TUI Cockpit",
     "govctl.feature.ai.desc":
-      "面向支持 shell 的 AI 代理，提供 /gov 与 /migrate 等可复用工作流。",
+      "用 loop 协调本地执行 round，并通过只读终端 cockpit 检查项目状态。",
     "govctl.cli.label": "参考",
     "govctl.cli.title": "CLI 命令",
     "govctl.cli.validation": "验证",
-    "govctl.cli.listing": "列表",
+    "govctl.cli.listing": "发现",
     "govctl.cli.creating": "创建工件",
     "govctl.cli.lifecycle": "生命周期",
+    "govctl.cli.execution": "执行 Loop",
+    "govctl.cli.cockpit": "TUI Cockpit",
     "govctl.fit.label": "适用",
     "govctl.fit.title": "适用于谁",
     "govctl.fit.good": "适合",

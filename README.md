@@ -33,9 +33,10 @@ bun run preview
 
 ## Latest govctl Updates Reflected Here
 
-- `govctl` product messaging now emphasizes AI-agent integration through skill-based workflows (`/gov`, `/migrate`, `/discuss`, `/commit`, `/quick`)
-- Existing project adoption is highlighted through the `/migrate` workflow
-- Release narrative and blog content track the current `0.8.x` line
+- `govctl` product messaging now reflects the `0.9.x` line: local execution loops, project-wide search, faster artifact lookup, and the read-only TUI cockpit
+- AI-agent integration remains framed through skill-based workflows (`/gov`, `/migrate`, `/discuss`, `/commit`, `/quick`)
+- Existing project adoption is highlighted through the `/migrate` workflow, while legacy RFC/clause JSON conversion is documented as a pre-0.9 migration step
+- Release narrative and blog content track the current `0.9.x` line
 
 ## License
 

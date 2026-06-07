@@ -124,8 +124,11 @@ const notFor = [
               { prompt: true, text: 'govctl init' },
               { text: t('govctl.install.initHint'), dim: true },
               { text: '', dim: true },
-              { text: t('govctl.install.tuiOptionalHint'), dim: true },
-              { prompt: true, text: 'cargo install govctl --features tui' },
+              { text: t('govctl.install.tuiDefaultHint'), dim: true },
+              { prompt: true, text: 'govctl tui' },
+              { text: '', dim: true },
+              { text: t('govctl.install.minimalHint'), dim: true },
+              { prompt: true, text: 'cargo install govctl --no-default-features' },
             ]}
           />
         </div>
@@ -210,11 +213,11 @@ const notFor = [
         <div>
           <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.listing')}</h3>
           <Terminal
-            title="list"
+            title="search"
             lines={[
-              { prompt: true, text: 'govctl rfc list' },
-              { prompt: true, text: 'govctl adr list' },
-              { prompt: true, text: 'govctl work list' },
+              { prompt: true, text: 'govctl search cache' },
+              { prompt: true, text: 'govctl search RFC-0002 -o json' },
+              { prompt: true, text: 'govctl search migration --type rfc --type adr --tag cli -n 5' },
             ]}
           />
         </div>
@@ -227,6 +230,31 @@ const notFor = [
               { prompt: true, text: 'govctl rfc new "Feature Title"' },
               { prompt: true, text: 'govctl adr new "Decision Title"' },
               { prompt: true, text: 'govctl work new "Task Title"' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.execution')}</h3>
+          <Terminal
+            title="loop"
+            lines={[
+              { prompt: true, text: 'govctl loop list open' },
+              { prompt: true, text: 'govctl loop start WI-2026-06-07-001 WI-2026-06-07-002' },
+              { prompt: true, text: 'govctl loop run <LOOP-ID>' },
+              { prompt: true, text: 'govctl loop show <LOOP-ID>' },
+            ]}
+          />
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-[var(--color-text)] mb-4">{t('govctl.cli.cockpit')}</h3>
+          <Terminal
+            title="tui"
+            lines={[
+              { prompt: true, text: 'govctl tui' },
+              { text: '<span class="text-[var(--color-stable)]">✓</span> overview · artifacts · search', dim: false },
+              { text: '<span class="text-[var(--color-stable)]">✓</span> loops · DAG · diagnostics', dim: false },
             ]}
           />
         </div>
